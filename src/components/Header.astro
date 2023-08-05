@@ -1,0 +1,28 @@
+---
+import { PAGE_MAX_WIDTH } from '../constants/styles'
+
+const links = [
+  {
+    name: 'Home',
+    href: '/',
+  },
+]
+
+---
+
+<header class="h-14 bg-gray-200">
+  <div class={`flex items-center justify-between h-full ${PAGE_MAX_WIDTH} m-auto sm:px-16`}>
+    <h2>☀️MyLibrary</h2>
+    <nav>
+      <ul>
+          {
+            links.map(({ href, name }) => (
+              <li>
+                <a href={href} class="px-2 py-1 rounded-md hover:bg-gray-300 underline hover:no-underline">{name}</a>  
+              </li>
+            ))
+          }
+      </ul>
+    </nav>
+  </div>
+</header>

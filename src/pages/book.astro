@@ -1,7 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Search from '../components/Search.astro';
-import BookCard from '../components/BookCard.astro';
 
 import { PAGE_MAX_WIDTH } from '../constants/styles';
 
@@ -14,13 +12,9 @@ const cover = 'https://ia600602.us.archive.org/view_archive.php?archive=/24/item
 
 <Layout title="Home">
 	<div class={`${PAGE_MAX_WIDTH} mx-auto mt-10`}>
-		<Search />
-		<div class="flex gap-2 justify-between mt-20">
-			{
-				['','',''].map((_, index) => (
-					<BookCard id={index} {title} {author} {publish_date} {cover} />
-				))
-			}
-		</div>
+			<img src={cover} alt="" transition:name={`book-cover-${0}`}>
+			<h2>{title}</h2>
+			<p>{author}</p>
+			<p>{publish_date}</p>
 	</div>
 </Layout>
