@@ -18,7 +18,7 @@ const cover = 'https://ia600602.us.archive.org/view_archive.php?archive=/24/item
 		<div class="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-4 justify-between mt-20">
 			{
 				['','','',''].map((_, index) => (
-					<BookCard id={index} {title} {author} {publish_date} {cover} />
+					<BookCard id={index} {title} {author} {publish_date} {cover} client:visible />
 				))
 			}
 		</div>

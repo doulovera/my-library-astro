@@ -38,10 +38,12 @@ export interface SearchResponse {
 }
 
 export interface BookListInfo {
+  id:          string;
   title:       string;
   publishDate: string;
   isbn:        string[];
   publisher:   string[];
   language:    string[];
   author:      string;
+  cover:       string;
 }
