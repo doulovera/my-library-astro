@@ -7,7 +7,7 @@ type SearchBooksResponse = { success: boolean, total: number, list: BookListInfo
 export const searchBooks = async (query: string): Promise<SearchBooksResponse> => {
   try {
     const searchTerm = encodeURIComponent(query)
-    const response = await fetch(`${BASE_URL}/search.json?q=${searchTerm}&limit=${MAX_BOOKS}`)
+    const response = await fetch(`${BASE_URL}/search.json?q=${searchTerm}&limit=20`)
     
     if (!response.ok) throw new Error('Something went wrong')
 
@@ -28,10 +28,14 @@ export const searchBooks = async (query: string): Promise<SearchBooksResponse> =
       }
     })
 
+    const filterRepeatedBooks = list.filter((book, index, self) => (
+      index === self.findIndex((b) => (b.id === book.id))
+    ))
+
     return {
       success: true,
-      total: data.numFound,
-      list: list.slice(0, MAX_BOOKS)
+      total: filterRepeatedBooks.length,
+      list: filterRepeatedBooks.slice(0, MAX_BOOKS)
     }
   } catch (error) {
     console.error(error)

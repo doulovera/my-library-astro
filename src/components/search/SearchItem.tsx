@@ -37,15 +37,19 @@ export default function SearchItems ({ searchStatus, list }: ShowResultsProps ) 
       <div className="w-full max-h-72 overflow-y-auto h-auto">
         {
           list.map((book: BookListInfo) => (
-            <button onClick={() => handleItemClick(book)} className="flex justify-between w-full text-left px-2 py-4 bg-white hover:bg-gray-100 border border-b-slate-100">
-              <div className="flex">
-                {/* <div>
-                  <img src={book.cover} alt="" />
-                </div> */}
+            <button key={book.id} onClick={() => handleItemClick(book)} className="flex justify-between w-full text-left px-2 py-4 bg-white hover:bg-gray-100 border border-b-slate-100">
+              <div className="flex gap-2">
                 <div>
+                  <img
+                    src={book?.cover}
+                    alt=""
+                    className="h-16 w-11 bg-cover rounded-sm"
+                  />
+                </div>
+                <div className="flex-1">
                   <p className="text-md font-semibold">{book.title} ({book.publishDate})</p>
                   <p className="text-sm text-gray-500">{book.author}</p>
-                  <p className="text-xs text-gray-500">{book.publisher[0]}</p>
+                  <p className="text-xs text-gray-500">{book.publisher?.[0] || 'N/A'}</p>
                 </div>
               </div>
               <div className="text-right hidden md:inline-block">
