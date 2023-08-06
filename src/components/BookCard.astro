@@ -12,7 +12,7 @@ const { id, title, author, publish_date, cover } = Astro.props;
 const bookLink = '/book'
 ---
 
-<div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
+<div class="bg-white border border-gray-200 rounded-lg shadow">
   <a href={bookLink}>
     <img class="rounded-t-lg w-full" src={cover} alt="" transition:name={`book-cover-${id}`} transition:persist />
   </a>
