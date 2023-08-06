@@ -2,12 +2,18 @@ import { useState } from 'preact/hooks'
 
 import { searchBooks } from '../services/book.service'
 import SearchResults from './SearchResults';
+import type { BookListInfo } from '../types/book-api';
 
 export default function Search () {
-  const [books, setBooks] = useState<any>([]);
+  const [books, setBooks] = useState<BookListInfo[]>([]);
+  const [status, setStatus] = useState({ loading: false, error: false, results: 0 });
+  const [hasSearched, setHasSearched] = useState(false);
   
   const handleSubmit = async (event: Event) => {
     event.preventDefault();
+    setStatus({ loading: true, error: false, results: 0 });
+    setHasSearched(true);
+
     const form = event.target as HTMLFormElement;
     const formData = new FormData(form);
     const query = formData.get("query") as string;
@@ -15,11 +21,16 @@ export default function Search () {
     const { success, total, list } = await searchBooks(query);
     
     if (!success) {
+      setStatus({ loading: false, error: true, results: 0 });
       return;
     }
 
-    setBooks(list)
+    setStatus({ loading: false, error: false, results: total });
+    setBooks(list);
   }
+
+  const isSearchResultsOpen = books.length > 0;
+  const inputRounded = isSearchResultsOpen ? 'rounded-t-lg' : 'rounded-lg';
 
   return (
     <section className="relative">
@@ -35,8 +46,9 @@ export default function Search () {
             type="search"
             name="query"
             id="default-search"
-            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Search for books by title or ISBN"
+            className={`block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 ${inputRounded} bg-gray-50 focus:ring-blue-500 focus:border-blue-500`}
+            placeholder="Search for books by title, author or ISBN"
+            tabIndex={1}
             required
           />
           <button
@@ -48,7 +60,7 @@ export default function Search () {
         </div>
       </form>
       {
-        books.length > 0 && <SearchResults list={books} />
+        hasSearched && <SearchResults list={books} status={status} />
       }
     </section>
   )

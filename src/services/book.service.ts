@@ -14,11 +14,11 @@ export async function searchBooks (query: string): Promise<SearchBooksResponse> 
     const data: SearchResponse = await response.json()
 
     const list = data.docs.map((book) => {
-      const { title, publish_date, isbn, publisher, language, author_name } = book
+      const { title, publish_year, isbn, publisher, language, author_name } = book
 
       return {
         title,
-        publishDate: publish_date?.[0] || '',
+        publishDate: ''+publish_year?.[0] || '',
         isbn,
         publisher,
         language,
