@@ -1,16 +1,7 @@
-import svgLoader from '../assets/icons/loader.svg'
-import { NOT_FOUND, SUCCESS, LOADING } from "../constants/status";
+import svgLoader from '../../assets/icons/loader.svg'
+import { NOT_FOUND, SUCCESS, LOADING } from "../../constants/status";
 
-import type { BookListInfo } from "../types/book-api";
-
-type Props = {
-  list: BookListInfo[]
-  status: {
-    loading: boolean,
-    error: boolean,
-    results: number
-  }
-}
+import type { BookListInfo } from "../../types/book-api";
 
 function LoadingResults () {
   return (
@@ -33,7 +24,7 @@ type ShowResultsProps = {
   searchStatus: typeof NOT_FOUND | typeof SUCCESS | typeof LOADING
   list: BookListInfo[]
 }
-function ShowResults ({ searchStatus, list }: ShowResultsProps ) {
+export default function SearchItems ({ searchStatus, list }: ShowResultsProps ) {
   if (searchStatus === NOT_FOUND) return <NoResults />
   if (searchStatus === LOADING) return <LoadingResults />
   if (searchStatus === SUCCESS) {
@@ -63,27 +54,4 @@ function ShowResults ({ searchStatus, list }: ShowResultsProps ) {
   }
 
   return <></>
-}
-
-export default function SearchResults ({ list, status }: Props) {
-  const isLoading = status.loading && 'LOADING'
-  const isNotFound = (!isLoading && status.results === 0) && 'NOT_FOUND'
-  const isSuccess = (!isLoading && status.results > 0) && 'SUCCESS'
-
-  const searchStatus = isLoading || isNotFound || isSuccess || 'NOT_FOUND';
-
-  return (
-    <div className="absolute w-full text-gray-900 border border-gray-300 bg-gray-50 z-50 rounded-b-xl shadow-md overflow-hidden">
-      <ShowResults searchStatus={searchStatus} list={list} />
-      <div className="flex justify-between px-2 py-1 border text-gray-500 text-sm border-t-gray-300 bg-gray-100">
-        <p>
-          Results: {status.loading ? '...' : status.results}
-        </p>
-        <p>
-          <span className="hidden sm:inline">Books saved persists in local storage. </span>
-          Data from <a href="https://openlibrary.org" target="_blank" rel="noopener noreferrer">openlibrary.org</a>
-        </p>
-      </div>
-    </div>
-  )
 }

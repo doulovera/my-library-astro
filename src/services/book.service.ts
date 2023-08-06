@@ -18,11 +18,11 @@ export async function searchBooks (query: string): Promise<SearchBooksResponse> 
 
       return {
         title,
-        publishDate: ''+publish_year?.[0] || '',
+        publishDate: `${publish_year?.[0] || 'N/A'}`,
         isbn,
         publisher,
         language,
-        author: author_name?.join(', ') || ''
+        author: author_name?.join(', ') || 'N/A'
       }
     })
 

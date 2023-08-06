@@ -1,8 +1,8 @@
 import { useState } from 'preact/hooks'
 
-import { searchBooks } from '../services/book.service'
-import SearchResults from './SearchResults';
-import type { BookListInfo } from '../types/book-api';
+import { searchBooks } from '../../services/book.service'
+import SearchResults from '../search/SearchResults';
+import type { BookListInfo } from '../../types/book-api';
 
 export default function Search () {
   const [books, setBooks] = useState<BookListInfo[]>([]);
@@ -29,8 +29,7 @@ export default function Search () {
     setBooks(list);
   }
 
-  const isSearchResultsOpen = books.length > 0;
-  const inputRounded = isSearchResultsOpen ? 'rounded-t-lg' : 'rounded-lg';
+  const inputRounded = hasSearched ? 'rounded-t-lg' : 'rounded-lg';
 
   return (
     <section className="relative">
@@ -59,9 +58,7 @@ export default function Search () {
           </button>
         </div>
       </form>
-      {
-        hasSearched && <SearchResults list={books} status={status} />
-      }
+      <SearchResults list={books} status={status} searched={hasSearched} setHasSearched={setHasSearched} />
     </section>
   )
 }
