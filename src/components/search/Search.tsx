@@ -4,8 +4,12 @@ import { searchBooks } from '../../services/book.service'
 import SearchResults from '../search/SearchResults';
 import type { BookListInfo } from '../../types/book-api';
 
-export default function Search () {
-  const [books, setBooks] = useState<BookListInfo[]>([]);
+type Props = {
+  addNewBook: (book: BookListInfo) => void;
+}
+
+export default function Search ({ addNewBook }: Props) {
+  const [booksFound, setBooksFound] = useState<BookListInfo[]>([]);
   const [status, setStatus] = useState({ loading: false, error: false, results: 0 });
   const [hasSearched, setHasSearched] = useState(false);
   
@@ -26,7 +30,7 @@ export default function Search () {
     }
 
     setStatus({ loading: false, error: false, results: total });
-    setBooks(list);
+    setBooksFound(list);
   }
 
   const inputRounded = hasSearched ? 'rounded-t-lg' : 'rounded-lg';
@@ -58,7 +62,7 @@ export default function Search () {
           </button>
         </div>
       </form>
-      <SearchResults list={books} status={status} searched={hasSearched} setHasSearched={setHasSearched} />
+      <SearchResults list={booksFound} status={status} searched={hasSearched} setHasSearched={setHasSearched} addNewBook={addNewBook} />
     </section>
   )
 }

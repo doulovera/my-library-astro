@@ -1,5 +1,6 @@
 import svgLoader from '../../assets/icons/loader.svg'
 import { NOT_FOUND, SUCCESS, LOADING } from "../../constants/status";
+import { useBooks } from '../../hooks/useBooks';
 import { saveOneBook } from '../../services/book.service';
 
 import type { BookListInfo } from "../../types/book-api";
@@ -24,12 +25,9 @@ function NoResults () {
 type ShowResultsProps = {
   searchStatus: typeof NOT_FOUND | typeof SUCCESS | typeof LOADING
   list: BookListInfo[]
+  onSelectItem: (book: BookListInfo) => void
 }
-export default function SearchItems ({ searchStatus, list }: ShowResultsProps ) {
-  const handleItemClick = async (book: BookListInfo) => {
-    await saveOneBook({ data: book })
-  }
-
+export default function SearchItems ({ searchStatus, list, onSelectItem }: ShowResultsProps ) {
   if (searchStatus === NOT_FOUND) return <NoResults />
   if (searchStatus === LOADING) return <LoadingResults />
   if (searchStatus === SUCCESS) {
@@ -37,7 +35,7 @@ export default function SearchItems ({ searchStatus, list }: ShowResultsProps ) 
       <div className="w-full max-h-72 overflow-y-auto h-auto">
         {
           list.map((book: BookListInfo) => (
-            <button key={book.id} onClick={() => handleItemClick(book)} className="flex justify-between w-full text-left px-2 py-4 bg-white hover:bg-gray-100 border border-b-slate-100">
+            <button key={book.id} onClick={() => onSelectItem(book)} className="flex justify-between w-full text-left px-2 py-4 bg-white hover:bg-gray-100 border border-b-slate-100">
               <div className="flex gap-2">
                 <div>
                   <img

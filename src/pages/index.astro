@@ -1,26 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Search from '../components/search/Search.tsx';
-import BookCard from '../components/BookCard.astro';
+import BookContainer from '../components/BookContainer.tsx';
 
 import { PAGE_MAX_WIDTH } from '../constants/styles';
-
-const title = 'Prosas Apátridas'
-const author = 'Julio Ramón Ribeyro'
-const publish_date = '1978'
-const cover = 'https://ia600602.us.archive.org/view_archive.php?archive=/24/items/olcovers444/olcovers444-L.zip&file=4444146-L.jpg'
 
 ---
 
 <Layout title="Home">
 	<div class={`${PAGE_MAX_WIDTH} mx-auto mt-10 px-8 md:px-0`}>
-		<Search client:visible />
-		<div class="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-4 justify-between mt-20">
-			{
-				['','','',''].map((_, index) => (
-					<BookCard id={index} {title} {author} {publish_date} {cover} client:visible />
-				))
-			}
-		</div>
+		<BookContainer client:visible />
 	</div>
 </Layout>

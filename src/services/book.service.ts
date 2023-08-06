@@ -16,6 +16,8 @@ export const searchBooks = async (query: string): Promise<SearchBooksResponse> =
     const list = data.docs.map((book) => {
       const { title, publish_year, isbn, publisher, language, author_name } = book
 
+      if (!isbn?.[0]) return
+
       return {
         id: `${title}-${publish_year?.[0]}-${author_name?.[0]}`.toLowerCase().split(' ').join('-'),
         title,
@@ -24,18 +26,20 @@ export const searchBooks = async (query: string): Promise<SearchBooksResponse> =
         publisher,
         language,
         author: author_name?.join(', ') || 'N/A',
-        cover: isbn?.[0] ? `http://covers.openlibrary.org/b/isbn/${isbn?.[0]}-M.jpg` : 'https://via.placeholder.com/130x180'
+        cover: `http://covers.openlibrary.org/b/isbn/${isbn?.[0]}-M.jpg`
       }
     })
+    
+    const filterNull = list.filter(Boolean)
 
-    const filterRepeatedBooks = list.filter((book, index, self) => (
-      index === self.findIndex((b) => (b.id === book.id))
+    const filterRepeatedBooks = filterNull.filter((book, index, self) => (
+      index === self.findIndex((b) => (b!.id === book!.id))
     ))
 
     return {
       success: true,
       total: filterRepeatedBooks.length,
-      list: filterRepeatedBooks.slice(0, MAX_BOOKS)
+      list: filterRepeatedBooks.slice(0, MAX_BOOKS) as BookListInfo[]
     }
   } catch (error) {
     console.error(error)
@@ -73,7 +77,7 @@ export const saveOneBook = async ({ data }: SaveOneBook): Promise<SaveOneBookRes
 
 
 type GetAllBooksResponse = { success: boolean, list: BookListInfo[] }
-export const getAllBooks = (): GetAllBooksResponse => {
+export const getAllBooks = async (): Promise<GetAllBooksResponse> => {
   try {
     const key = 'myLibrary-books'
     const books = localStorage.getItem(key)

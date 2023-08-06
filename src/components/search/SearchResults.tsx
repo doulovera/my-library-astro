@@ -11,9 +11,10 @@ type Props = {
   },
   searched: boolean
   setHasSearched: (hasSearched: boolean) => void
+  addNewBook: (book: BookListInfo) => void
 }
 
-export default function SearchResults ({ list, status, searched, setHasSearched }: Props) {
+export default function SearchResults ({ list, status, searched, setHasSearched, addNewBook }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const isLoading = status.loading && 'LOADING'
   const isNotFound = (!isLoading && status.results === 0) && 'NOT_FOUND'
@@ -50,11 +51,17 @@ export default function SearchResults ({ list, status, searched, setHasSearched 
     }
   }, [])
 
+  const onSelectItem = (book: BookListInfo) => {
+    addNewBook(book)
+    setIsOpen(false)
+    setHasSearched(false)
+  }
+
   if (!isOpen) return <></>
 
   return (
     <div id="search-box-container" className="absolute w-full text-gray-900 border border-gray-300 bg-gray-50 z-50 rounded-b-xl shadow-md overflow-hidden">
-      <SearchItems searchStatus={searchStatus} list={list} />
+      <SearchItems searchStatus={searchStatus} list={list} onSelectItem={onSelectItem} />
       <div className="flex justify-between px-2 py-1 border text-gray-500 text-sm border-t-gray-300 bg-gray-100">
         <p>
           Results: {status.loading ? '...' : status.results}
