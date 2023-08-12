@@ -2,9 +2,15 @@ import BookCard from "./BookCard.tsx";
 
 import type { BookListInfo } from "../../types/book-api";
 
-export default function BookList ({ books }: { books: BookListInfo[] }) {
+export default function BookList ({ books }: { books: BookListInfo[] | null }) {
 
-  if (!books || !books.length) return (
+  if (!books) return (
+    <div>
+      <h1>No books found</h1>
+    </div>
+  )
+
+  if (!books.length) return (
     <div>
       <h1>Loading...</h1>
     </div>
