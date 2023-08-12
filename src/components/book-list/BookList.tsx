@@ -1,16 +1,26 @@
-import { useBooks } from "../../hooks/useBooks";
+import BookCard from "./BookCard.tsx";
+
 import type { BookListInfo } from "../../types/book-api";
 
 export default function BookList ({ books }: { books: BookListInfo[] }) {
 
-  return (
+  if (!books || !books.length) return (
     <div>
-      {books.map((book) => (
-        <div key={book.id}>
-          <h3>☀️{book.title}</h3>
-          <p>{book.author}</p>
-          <hr />
-        </div>
+      <h1>Loading...</h1>
+    </div>
+  )
+
+  return (
+    <div class="grid grid-cols-[repeat(auto-fit,_minmax(170px,_1fr))] gap-x-4 gap-y-8 justify-between mt-20">
+      {books.map(({ title, author, publishDate, cover, id }) => (
+        <BookCard 
+          key={id}
+          id={id}
+          title={title}
+          author={author}
+          publishDate={publishDate}
+          cover={cover}
+        />
       ))}
     </div>
   )
