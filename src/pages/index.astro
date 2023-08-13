@@ -1,13 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BookContainer from '../components/BookContainer.tsx';
+import LandscapeImage from '../components/shared/LandscapeImage.astro';
 
 import { PAGE_MAX_WIDTH } from '../constants/styles';
 
 ---
 
 <Layout title="Home">
-	<div class={`${PAGE_MAX_WIDTH} mx-auto mt-10 px-8 md:px-0`}>
+	<LandscapeImage />
+	<div class={`${PAGE_MAX_WIDTH} mx-auto my-16 xs:px-8 md:px-0 relative z-50`}>
 		<BookContainer client:visible />
 	</div>
 </Layout>

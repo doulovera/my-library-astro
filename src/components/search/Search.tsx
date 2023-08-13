@@ -36,7 +36,7 @@ export default function Search ({ addNewBook }: Props) {
   const inputRounded = hasSearched ? 'rounded-t-lg' : 'rounded-lg';
 
   return (
-    <section className="relative">
+    <section className="relative mx-auto max-w-sm xs:max-w-full px-2 xs:px-0">
       <form onSubmit={handleSubmit}>
         <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
         <div className="relative">
