@@ -10,15 +10,15 @@ const links = [
 
 ---
 
-<header class="relative z-50 h-14 bg-gray-200">
+<header class="relative z-50 h-14 bg-gray-100">
   <div class={`flex items-center justify-between h-full ${PAGE_MAX_WIDTH} m-auto px-8 md:px-0`}>
-    <h2>☀️MyLibrary</h2>
+    <h2 class="text-xl font-title font-semibold">MyLibrary.</h2>
     <nav>
       <ul>
           {
             links.map(({ href, name }) => (
               <li>
-                <a href={href} class="px-2 py-1 rounded-md hover:bg-gray-300 underline hover:no-underline">{name}</a>  
+                <a href={href} class="p-2 rounded-md hover:bg-gray-200 font-title text-sm">{name}.</a>  
               </li>
             ))
           }

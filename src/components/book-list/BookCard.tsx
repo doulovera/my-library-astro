@@ -22,10 +22,10 @@ export default function BookCard ({ id, title, author, publishDate, cover }: Pro
       </div>
       <div className="pt-4 px-1">
         <div>
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-500 text-sm">
             {author}
           </p>
-          <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900">
+          <h5 className="mb-2 text-md font-semibold tracking-tight text-gray-900">
               {title}
           </h5>
         </div>
