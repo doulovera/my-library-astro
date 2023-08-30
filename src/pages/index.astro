@@ -8,8 +8,5 @@ import { PAGE_MAX_WIDTH } from '../constants/styles';
 ---
 
 <Layout title="Home">
-	<LandscapeImage />
-	<div class={`${PAGE_MAX_WIDTH} mx-auto my-16 xs:px-8 md:px-0 relative z-50`}>
-		<BookContainer client:visible />
-	</div>
+	<BookContainer client:visible />
 </Layout>

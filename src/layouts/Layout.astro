@@ -1,6 +1,9 @@
 --- 
 import { ViewTransitions } from 'astro:transitions';
 import Header from '../components/Header.astro';
+import LandscapeImage from '../components/shared/LandscapeImage.astro';
+
+import { PAGE_MAX_WIDTH } from '../constants/styles';
 
 interface Props {
 	title: string;
@@ -26,7 +29,10 @@ const { title } = Astro.props;
 	<body>
 		<Header />
 		<main>
-			<slot />
+			<LandscapeImage />
+			<div class={`${PAGE_MAX_WIDTH} mx-auto my-16 xs:px-8 md:px-0 relative z-50`}>
+				<slot />
+			</div>
 		</main>
 	</body>
 </html>

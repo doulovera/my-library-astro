@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+import { PAGE_MAX_WIDTH } from '../../constants/styles';
+
+export const prerender = false
+
+const title = 'Prosas Apátridas'
+const author = 'Julio Ramón Ribeyro'
+const publish_date = '1978'
+const cover = 'https://ia600602.us.archive.org/view_archive.php?archive=/24/items/olcovers444/olcovers444-L.zip&file=4444146-L.jpg'
+
+---
+
+<Layout title="Home">
+  <div class="mt-10 grid gap-2 sm:grid-cols-[1fr,_0.6fr]">
+    <section class="p-10 bg-gray-50 rounded-xl shadow-xl">    
+      <img src={cover} alt="" transition:name={`book-cover-prosas-apátridas-1975-julio-ramón-ribeyro`}>
+      <!-- <h2>{title}</h2>
+      <p>{author}</p>
+      <p>{publish_date}</p> -->
+    </section>
+    <section class="p-10 bg-gray-50 rounded-xl shadow-xl"></section>
+  </div>
+</Layout>

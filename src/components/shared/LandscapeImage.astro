@@ -1,6 +1,24 @@
+---
+
+const IMAGE_LIST: { [key: string]: string } = {
+  mountains: 'landscape-mod.webp',
+  none: ''
+}
+
+interface Props {
+  image?: 'mountains' | 'none'
+}
+
+const { image } = Astro.props
+
+const selectedImage = IMAGE_LIST[image || 'mountains']
+const imageUrl = `url(../../src/assets/${selectedImage})`
+
+---
+
 <div class="landscape-image"></div>
 
-<style>
+<style define:vars={{ imageUrl }}>
   .landscape-image {
     position: absolute;
     top: 0;
@@ -12,6 +30,6 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url('../../assets/landscape-mod.webp');
+    background-image: var(--imageUrl);
   }
 </style>
