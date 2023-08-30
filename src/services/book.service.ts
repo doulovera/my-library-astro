@@ -2,6 +2,7 @@ import type { BookListInfo, SearchResponse } from "../types/book-api"
 
 const BASE_URL = 'https://openlibrary.org'
 const MAX_BOOKS = 12
+const TABLE_KEY = 'myLibrary-books'
 
 type SearchBooksResponse = { success: boolean, total: number, list: BookListInfo[] }
 export const searchBooks = async (query: string): Promise<SearchBooksResponse> => {
@@ -36,10 +37,12 @@ export const searchBooks = async (query: string): Promise<SearchBooksResponse> =
       index === self.findIndex((b) => (b!.id === book!.id))
     ))
 
+    const slicedBooks = filterRepeatedBooks.slice(0, MAX_BOOKS)
+
     return {
       success: true,
-      total: filterRepeatedBooks.length,
-      list: filterRepeatedBooks.slice(0, MAX_BOOKS) as BookListInfo[]
+      total: slicedBooks.length,
+      list: slicedBooks as BookListInfo[]
     }
   } catch (error) {
     console.error(error)
@@ -55,13 +58,12 @@ type SaveOneBook = { data: BookListInfo }
 type SaveOneBookResponse = { success: boolean }
 
 export const saveOneBook = async ({ data }: SaveOneBook): Promise<SaveOneBookResponse> => {
-  const key = 'myLibrary-books'
   try {
-    const books = localStorage.getItem(key)
+    const books = localStorage.getItem(TABLE_KEY)
     const parsedBooks: BookListInfo[] = books ? JSON.parse(books) : []
     const newBooks = [...parsedBooks, data]
 
-    localStorage.setItem(key, JSON.stringify(newBooks))
+    localStorage.setItem(TABLE_KEY, JSON.stringify(newBooks))
 
     return {
       success: true
@@ -75,17 +77,33 @@ export const saveOneBook = async ({ data }: SaveOneBook): Promise<SaveOneBookRes
   }
 }
 
-
 type GetAllBooksResponse = { success: boolean, list: BookListInfo[] }
 export const getAllBooks = async (): Promise<GetAllBooksResponse> => {
   try {
-    const key = 'myLibrary-books'
-    const books = localStorage.getItem(key)
+    const books = localStorage.getItem(TABLE_KEY)
     const parsedBooks: BookListInfo[] = books ? JSON.parse(books) : []
 
     return {
       success: true,
       list: parsedBooks
+    }
+  } catch (error) {
+    console.log(error)
+    return { success: false, list: [] }
+  }
+}
+
+export const removeOneBook = async (bookId: string) => {
+  try {
+    const books = localStorage.getItem(TABLE_KEY)
+    const parsedBooks: BookListInfo[] = books ? JSON.parse(books) : []
+
+    const filteredBooks = parsedBooks?.filter((book) => book.id !== bookId)
+    localStorage.setItem(TABLE_KEY, JSON.stringify(filteredBooks))
+
+    return {
+      success: true,
+      list: filteredBooks
     }
   } catch (error) {
     console.log(error)

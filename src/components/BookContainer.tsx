@@ -3,7 +3,7 @@ import BookList from "./book-list/BookList"
 import { useBooks } from "../hooks/useBooks";
 
 export default function BookContainer() {
-  const { books, addNewBook } = useBooks()
+  const { books, addNewBook, removeBook } = useBooks()
 
   return (
     <>
@@ -13,7 +13,7 @@ export default function BookContainer() {
           <h2 className="text-xl mb-1 font-title font-medium">Saved Books.</h2>
           <p className="text-sm text-gray-500">Books are saved in Local Storage</p>
         </div>
-        <BookList books={books} />
+        <BookList books={books} removeBook={removeBook} />
       </section>
     </>
   )

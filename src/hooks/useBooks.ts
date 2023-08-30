@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks"
 import type { BookListInfo } from "../types/book-api"
-import { getAllBooks, saveOneBook } from "../services/book.service"
+import { getAllBooks, removeOneBook, saveOneBook } from "../services/book.service"
 
 export const useBooks = () => { // if receive a prop, it will filter the book(s)
   const [books, setBooks] = useState<BookListInfo[] | null>([])
@@ -25,7 +25,11 @@ export const useBooks = () => { // if receive a prop, it will filter the book(s)
   }
 
   const removeBook = async (bookId: string) => {
-    console.log('remove book')
+    await removeOneBook(bookId)
+    setBooks((prev) => {
+      if (!prev) return prev
+      return prev?.filter((book) => book.id !== bookId)
+    })
   }
 
   return {
