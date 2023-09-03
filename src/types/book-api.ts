@@ -47,3 +47,30 @@ export interface BookListInfo {
   author:      string;
   cover:       string;
 }
+
+
+
+export interface SearchByISBNResponse {
+  [key: `ISBN:${string}`]: {
+    url:          string;
+    key:          string;
+    title:        string;
+    authors:      SearchByISBNAuthor[];
+    publishers:   SearchByISBNPublisher[];
+    publish_date: string;
+    cover:        {
+      small:  string;
+      medium: string;
+      large:  string;
+    };
+  };
+}
+
+export interface SearchByISBNAuthor {
+  url:  string;
+  name: string;
+}
+
+export interface SearchByISBNPublisher {
+  name: string;
+}

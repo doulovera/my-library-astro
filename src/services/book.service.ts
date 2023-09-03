@@ -1,4 +1,5 @@
-import type { BookListInfo, SearchResponse } from "../types/book-api"
+import { normalizeText } from "normalize-text"
+import type { BookListInfo, SearchByISBNResponse, SearchResponse } from "../types/book-api"
 
 const BASE_URL = 'https://openlibrary.org'
 const MAX_BOOKS = 12
@@ -19,8 +20,11 @@ export const searchBooks = async (query: string): Promise<SearchBooksResponse> =
 
       if (!isbn?.[0]) return
 
+      const bookId = `${title}-${publish_year?.[0]}-${author_name?.[0]}-${isbn?.[0]}`
+      const formattedId = normalizeText(bookId.toLowerCase()).replaceAll(" ", '-')
+      
       return {
-        id: `${title}-${publish_year?.[0]}-${author_name?.[0]}`.toLowerCase().split(' ').join('-'),
+        id: formattedId,
         title,
         publishDate: `${publish_year?.[0] || 'N/A'}`,
         isbn,
@@ -108,5 +112,36 @@ export const removeOneBook = async (bookId: string) => {
   } catch (error) {
     console.log(error)
     return { success: false, list: [] }
+  }
+}
+
+export const searchBookByIsbn = async (isbn: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/books?bibkeys=ISBN:${isbn}&jscmd=data&format=json`)
+    
+    if (!response.ok) throw new Error('Something went wrong')
+    
+    const data: SearchByISBNResponse = await response.json()
+  
+    if (Object.keys(data).length === 0) throw new Error('Book not found')
+
+    const foundBook = data[`ISBN:${isbn}`]
+
+    const { title, authors, cover, publish_date, publishers } = foundBook
+
+    
+    return {
+      success: true,
+      title,
+      publishDate: publish_date,
+      publisher: publishers.map((publisher) => publisher.name).join(', '),
+      author: authors.map((author) => author.name).join(', '),
+      cover: cover?.medium || cover?.large || `http://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`
+    }
+  } catch (error) {
+    console.error(error)
+    return {
+      success: false,
+    }
   }
 }
