@@ -21,16 +21,16 @@ export default function AuthorInfo ({ authorName }: AuthorInfoProps) {
   if (!authorName) return null;
 
   return (
-    <section class="p-10 bg-gray-50 rounded-xl shadow-xl">
+    <div className="p-10 bg-gray-50 rounded-xl shadow-xl">
       {
         result && (
           <div className="flex flex-col gap-2">
-            <img src={result.image} alt={result.name} className="h-32 rounded-md object-cover" />
+            <img src={result.image} alt={result.name} className="h-64 sm:h-48 bg-gray-100 rounded-md object-cover" />
             <h3 className="font-title">{result.name}</h3>
             <p className="text-sm">{result.description}</p>
           </div>
         )
       }
-    </section>
+    </div>
   )
 }

@@ -23,7 +23,10 @@ export default function BookList ({ books, removeBook }: BookListProps) {
   const handleRemoveBook = (id: string) => (event: Event) => {
     event.stopPropagation()
     event.preventDefault()
-    removeBook(id)
+
+    const confirmRemove = confirm("Are you sure to delete this book?")
+
+    if (confirmRemove) removeBook(id)
   }
 
   return (
