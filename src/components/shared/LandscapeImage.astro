@@ -12,7 +12,7 @@ interface Props {
 const { image } = Astro.props
 
 const selectedImage = IMAGE_LIST[image || 'mountains']
-const imageUrl = `url(../../src/assets/${selectedImage})`
+const imageUrl = `url(/${selectedImage})`
 
 ---
 
