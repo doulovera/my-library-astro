@@ -1,6 +1,6 @@
 import type { AuthorGoogle } from "../types/author";
 
-const BASE_URL = import.meta.env.APP_URL || 'http://localhost:4321';
+const BASE_URL = import.meta.env.PUBLIC_APP_URL || 'http://localhost:4321';
 
 const AUTHORS_KEY = 'myLibrary-authors'
 
