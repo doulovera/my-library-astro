@@ -30,7 +30,7 @@ export default function BookList ({ books, removeBook }: BookListProps) {
   }
 
   return (
-    <div class="grid grid-cols-[repeat(auto-fit,_minmax(190px,_1fr))] gap-x-4 gap-y-8 justify-between">
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(198px,_1fr))] gap-x-4 gap-y-8 justify-center sm:justify-between">
       {books.map(({ title, author, publishDate, cover, id }) => (
         <BookCard 
           key={id}

@@ -11,10 +11,10 @@ export default function BookCard ({ id, title, author, publishDate, cover, handl
   const bookLink = `/book/${id}`
 
   return (
-    <a className="max-w-xs mx-auto group" href={bookLink}>
-      <div className="relative">
+    <a className="inline-block mx-auto group" href={bookLink}>
+      <div className="relative mx-auto h-[288px] min-w-[198px] w-[198px] ">
         <img
-          className="aspect-auto min-h-[18rem] h-72 w-full object-cover bg-white border border-gray-200 rounded-lg shadow group-hover:scale-105 transition"
+          className="h-full w-full object-cover bg-white border border-gray-200 rounded-lg shadow group-hover:scale-105 transition"
           src={cover}
           alt=""
           style={`view-transition-name: book-cover-${id};`}

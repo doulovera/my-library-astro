@@ -25,9 +25,14 @@ const firstAuthor = author?.split(',').at(0)
   <div class="mt-10 grid gap-6 sm:gap-2 sm:grid-cols-[1fr,_0.5fr]">
     <section>    
       <div class="p-10 bg-gray-50 rounded-xl shadow-xl">
-        <div class="flex gap-5">
+        <div class="flex flex-col sm:flex-row gap-5">
           <div>
-            <img src={cover} alt="" transition:name={`book-cover-${bookId}`}>
+            <img
+              src={cover}
+              alt={`Cover of ${title}`}
+              class="h-[288px] w-full sm:min-w-[198px] sm:w-[198px] object-cover bg-white border border-gray-200 rounded-lg shadow"
+              transition:name={`book-cover-${bookId}`}
+            >
           </div>
           <div class="flex flex-col justify-between">
             <div>
