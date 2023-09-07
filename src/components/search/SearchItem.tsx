@@ -1,14 +1,11 @@
-import svgLoader from '../../assets/icons/loader.svg'
 import { NOT_FOUND, SUCCESS, LOADING } from "../../constants/status";
-import { useBooks } from '../../hooks/useBooks';
-import { saveOneBook } from '../../services/book.service';
 
 import type { BookListInfo } from "../../types/book-api";
 
 function LoadingResults () {
   return (
     <div className="w-full h-24 grid place-items-center py-4">
-      <img src={svgLoader} alt="" />
+      <img src="/icons/loader.svg" alt="" />
       <p className="text-sm text-gray-500">Fetching data from <a href="https://openlibrary.org" target="_blank" rel="noopener noreferrer">openlibrary.org</a></p>
     </div>
   )

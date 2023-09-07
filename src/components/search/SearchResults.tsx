@@ -60,7 +60,7 @@ export default function SearchResults ({ list, status, searched, setHasSearched,
   if (!isOpen) return <></>
 
   return (
-    <div id="search-box-container" className="absolute w-full text-gray-900 border border-gray-300 bg-gray-50 z-50 rounded-b-xl shadow-md overflow-hidden">
+    <div id="search-box-container" className="w-full text-gray-900 border border-gray-300 bg-gray-50 z-50 rounded-b-xl shadow-md overflow-hidden">
       <SearchItems searchStatus={searchStatus} list={list} onSelectItem={onSelectItem} />
       <div className="flex justify-between px-2 py-1 border text-gray-500 text-sm border-t-gray-300 bg-gray-100">
         <p>

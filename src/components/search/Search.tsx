@@ -14,29 +14,30 @@ export default function Search ({ addNewBook }: Props) {
   const [hasSearched, setHasSearched] = useState(false);
   
   const handleSubmit = async (event: Event) => {
-    event.preventDefault();
-    setStatus({ loading: true, error: false, results: 0 });
-    setHasSearched(true);
+    event.preventDefault()
 
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const query = formData.get("query") as string;
+    setStatus({ loading: true, error: false, results: 0 })
+    setHasSearched(true)
 
-    const { success, total, list } = await searchBooks(query);
+    const form = event.target as HTMLFormElement
+    const formData = new FormData(form)
+    const query = formData.get("query") as string
+
+    const { success, total, list } = await searchBooks(query)
     
     if (!success) {
-      setStatus({ loading: false, error: true, results: 0 });
-      return;
+      setStatus({ loading: false, error: true, results: 0 })
+      return
     }
 
-    setStatus({ loading: false, error: false, results: total });
-    setBooksFound(list);
+    setStatus({ loading: false, error: false, results: total })
+    setBooksFound(list)
   }
 
   const inputRounded = hasSearched ? 'rounded-t-lg' : 'rounded-lg';
 
   return (
-    <section className="relative mx-auto max-w-sm xs:max-w-full px-2 xs:px-0">
+    <section className="relative mx-auto max-w-sm xs:max-w-3xl px-2 xs:px-0">
       <form onSubmit={handleSubmit}>
         <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
         <div className="relative">
