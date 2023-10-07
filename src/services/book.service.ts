@@ -1,5 +1,7 @@
-import { normalizeText } from "normalize-text"
 import type { BookListInfo, SearchByISBNResponse, SearchResponse } from "../types/book-api"
+
+import { normalizeText } from "normalize-text"
+import { checkIfBlank } from "../utils/checkIfBlank"
 
 const BASE_URL = 'https://openlibrary.org'
 const MAX_BOOKS = 12
@@ -15,38 +17,43 @@ export const searchBooks = async (query: string): Promise<SearchBooksResponse> =
 
     const data: SearchResponse = await response.json()
 
-    const list = data.docs.map((book) => {
-      const { title, publish_year, isbn, publisher, language, author_name } = book
+    const list = await Promise.all(
+      data.docs.map(async (book) => {
+        const { title, publish_year, isbn, publisher, language, author_name } = book
 
-      if (!isbn?.[0]) return
+        if (!isbn?.[0] || !author_name) return
 
-      const bookId = `${title}-${publish_year?.[0]}-${author_name?.[0]}-${isbn?.[0]}`
-      const formattedId = normalizeText(bookId.toLowerCase()).replaceAll(" ", '-')
-      
-      return {
-        id: formattedId,
-        title,
-        publishDate: `${publish_year?.[0] || 'N/A'}`,
-        isbn,
-        publisher,
-        language,
-        author: author_name?.join(', ') || 'N/A',
-        cover: `http://covers.openlibrary.org/b/isbn/${isbn?.[0]}-M.jpg`
-      }
-    })
+        const bookId = `${title}-${publish_year?.[0]}-${author_name?.[0]}-${isbn?.[0]}`
+        const formattedId = normalizeText(bookId.toLowerCase()).replaceAll(" ", '-')
+        const bookCover = `http://covers.openlibrary.org/b/isbn/${isbn?.[0]}-M.jpg`
+
+        const isBlank = await checkIfBlank(bookCover)
+        
+        return {
+          id: formattedId,
+          title,
+          publishDate: `${publish_year?.[0] || 'N/A'}`,
+          isbn,
+          publisher,
+          language,
+          author: author_name?.join(', '),
+          cover: bookCover,
+          priority: isBlank ? 1 : 0
+        }
+      })
+    )
     
     const filterNull = list.filter(Boolean)
-
     const filterRepeatedBooks = filterNull.filter((book, index, self) => (
       index === self.findIndex((b) => (b!.id === book!.id))
     ))
-
     const slicedBooks = filterRepeatedBooks.slice(0, MAX_BOOKS)
+    const sortedByPriority = slicedBooks.sort((a, b) => a!.priority - b!.priority)
 
     return {
       success: true,
       total: slicedBooks.length,
-      list: slicedBooks as BookListInfo[]
+      list: sortedByPriority as BookListInfo[]
     }
   } catch (error) {
     console.error(error)
@@ -118,18 +125,18 @@ export const removeOneBook = async (bookId: string) => {
 export const searchBookByIsbn = async (isbn: string) => {
   try {
     const response = await fetch(`${BASE_URL}/api/books?bibkeys=ISBN:${isbn}&jscmd=data&format=json`)
-    
     if (!response.ok) throw new Error('Something went wrong')
     
     const data: SearchByISBNResponse = await response.json()
-  
+
     if (Object.keys(data).length === 0) throw new Error('Book not found')
 
     const foundBook = data[`ISBN:${isbn}`]
 
     const { title, authors, cover, publish_date, publishers } = foundBook
-
     
+    if (!title || !authors) throw new Error('Book not found')
+
     return {
       success: true,
       title,
